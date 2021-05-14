@@ -1,16 +1,6 @@
-"""
-This module is an example of a barebones numpy reader plugin for napari.
-
-It implements the ``napari_get_reader`` hook specification, (to create
-a reader plugin) but your plugin may choose to implement any of the hook
-specifications offered by napari.
-see: https://napari.org/docs/dev/plugins/hook_specifications.html
-
-Replace code below accordingly.  For complete documentation see:
-https://napari.org/docs/dev/plugins/for_plugin_developers.html
-"""
-import numpy as np
 from napari_plugin_engine import napari_hook_implementation
+from napari.utils.colormaps.colormap_utils import AVAILABLE_COLORMAPS
+from dexp.datasets.zarr_dataset import ZDataset
 
 
 @napari_hook_implementation
@@ -28,15 +18,12 @@ def napari_get_reader(path):
         If the path is a recognized format, return a function that accepts the
         same path or list of paths, and returns a list of layer data tuples.
     """
-    if isinstance(path, list):
-        # reader plugins may be handed single path, or a list of paths.
-        # if it is a list, it is assumed to be an image stack...
-        # so we are only going to look at the first file.
-        path = path[0]
+    paths = [path] if isinstance(path, str) else path
 
     # if we know we cannot read the file, we immediately return None.
-    if not path.endswith(".npy"):
-        return None
+    for path in paths:
+        if not path.endswith((".zarr", ".zarr.zip")):
+            return None
 
     # otherwise we return the *function* that can read ``path``.
     return reader_function
@@ -64,15 +51,25 @@ def reader_function(path):
         Both "meta", and "layer_type" are optional. napari will default to
         layer_type=="image" if not provided
     """
-    # handle both a string and a list of strings
     paths = [path] if isinstance(path, str) else path
-    # load all files into array
-    arrays = [np.load(_path) for _path in paths]
-    # stack arrays into single array
-    data = np.squeeze(np.stack(arrays))
 
-    # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
+    layer_data = []
+    layer_type = "image"
 
-    layer_type = "image"  # optional, default is "image"
-    return [(data, add_kwargs, layer_type)]
+    for path in paths:
+        dataset = ZDataset(path)
+
+        for channel in dataset.channels():
+            add_kwargs = {
+                'blending': 'additive',
+                'name': channel,
+            }
+
+            for colormap in AVAILABLE_COLORMAPS:
+                if colormap in channel.lower():
+                    add_kwargs['colormap'] = colormap
+
+            array = dataset.get_array(channel)
+            layer_data.append((array, add_kwargs, layer_type))
+
+    return layer_data
