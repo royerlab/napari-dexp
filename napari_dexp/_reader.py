@@ -29,6 +29,19 @@ def napari_get_reader(path):
     return reader_function
 
 
+LABELS_KEYWORDS = ('segment', 'instance', 'mask', 'label')
+
+
+def _guess_layer_type(channel: str) -> str:
+    # TODO: propose a better alternative using metadata?
+    layer_type = 'image'
+    for keyword in LABELS_KEYWORDS:
+        if keyword in channel.lower():
+            layer_type = 'labels'
+            break
+    return layer_type
+
+
 def reader_function(path):
     """Take a path or list of paths and return a list of LayerData tuples.
 
@@ -54,16 +67,18 @@ def reader_function(path):
     paths = [path] if isinstance(path, str) else path
 
     layer_data = []
-    layer_type = "image"
 
     for path in paths:
         dataset = ZDataset(path)
 
         for channel in dataset.channels():
+            layer_type = _guess_layer_type(channel)
+
             add_kwargs = {
-                'blending': 'additive',
                 'name': channel,
             }
+            if layer_type == 'image':
+                add_kwargs['blending'] = 'additive'
 
             for colormap in AVAILABLE_COLORMAPS:
                 if colormap in channel.lower():
