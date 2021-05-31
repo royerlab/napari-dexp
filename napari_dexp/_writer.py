@@ -18,19 +18,12 @@ SUPPORTED_TYPES = ['image', 'labels']
 
 @napari_hook_implementation
 def napari_get_writer(path: str, layer_types: List[str]) -> Optional[Callable]:
-
-    print(1)
     if not (path.endswith('.zarr') or path.endswith('.zarr.zip')):
-        print(1.5)
         return None
-    print(2)
 
-    print(3)
     for layer_type in layer_types:
-        print(3.5, layer_type)
         if layer_type not in SUPPORTED_TYPES:
             return None
-    print(4)
 
     return writer
 

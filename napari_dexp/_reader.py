@@ -69,7 +69,8 @@ def reader_function(path):
     layer_data = []
 
     for path in paths:
-        dataset = ZDataset(path)
+        mode = 'r' if path.endswith('.zip') else 'r+'
+        dataset = ZDataset(path, mode=mode)
 
         for channel in dataset.channels():
             layer_type = _guess_layer_type(channel)
@@ -77,14 +78,15 @@ def reader_function(path):
             add_kwargs = {
                 'name': channel,
             }
+
             if layer_type == 'image':
                 add_kwargs['blending'] = 'additive'
 
-            for colormap in AVAILABLE_COLORMAPS:
-                if colormap in channel.lower():
-                    add_kwargs['colormap'] = colormap
+                for colormap in AVAILABLE_COLORMAPS:
+                    if colormap in channel.lower():
+                        add_kwargs['colormap'] = colormap
 
             array = dataset.get_array(channel)
             layer_data.append((array, add_kwargs, layer_type))
-
+        
     return layer_data
