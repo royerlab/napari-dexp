@@ -67,10 +67,14 @@ def reader_function(path):
     paths = [path] if isinstance(path, str) else path
 
     layer_data = []
+    axes = ('dt', 'dz', 'dy', 'dx')
 
     for path in paths:
         mode = 'r' if path.endswith('.zip') else 'r+'
         dataset = ZDataset(path, mode=mode)
+        metadata = dataset.get_metadata()
+
+        ds_scale = [metadata.get(axis, 1.0) for axis in axes]
 
         for channel in dataset.channels():
             layer_type = _guess_layer_type(channel)
@@ -85,6 +89,9 @@ def reader_function(path):
                 for colormap in AVAILABLE_COLORMAPS:
                     if colormap in channel.lower():
                         add_kwargs['colormap'] = colormap
+
+            channel_metadata = metadata.get(channel, {})
+            add_kwargs['scale'] = [channel_metadata.get(axis, s) for axis, s in zip(axes, ds_scale)]
 
             array = dataset.get_array(channel)
             layer_data.append((array, add_kwargs, layer_type))

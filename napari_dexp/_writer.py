@@ -34,7 +34,7 @@ def writer(path: str, layers_data: List[Tuple[Any, Dict, str]]) -> str:
     for data, meta, ltype in layers_data:
         dataset.add_channel(meta['name'],
                             shape=data.shape,
-                            dtype= np.uint16 if ltype == 'image' else np.uint32)
+                            dtype=np.uint16 if ltype == 'image' else np.uint32)
         dataset.write_array(meta['name'], data)
 
     dataset.close()
