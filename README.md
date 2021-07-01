@@ -1,12 +1,12 @@
-# napari-dexp
+# napari-DEXP
 
-[![License](https://img.shields.io/pypi/l/napari-dexp.svg?color=green)](https://github.com/JoOkuma/napari-dexp/raw/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/napari-dexp.svg?color=green)](https://github.com/royerlab/napari-dexp/raw/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/napari-dexp.svg?color=green)](https://pypi.org/project/napari-dexp)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-dexp.svg?color=green)](https://python.org)
-[![tests](https://github.com/JoOkuma/napari-dexp/workflows/tests/badge.svg)](https://github.com/JoOkuma/napari-dexp/actions)
-[![codecov](https://codecov.io/gh/JoOkuma/napari-dexp/branch/master/graph/badge.svg)](https://codecov.io/gh/JoOkuma/napari-dexp)
+[![tests](https://github.com/royerlab/napari-dexp/workflows/tests/badge.svg)](https://github.com/royerlab/napari-dexp/actions)
+[![codecov](https://codecov.io/gh/royerlab/napari-dexp/branch/master/graph/badge.svg)](https://codecov.io/gh/royerlab/napari-dexp)
 
-A simple plugin to use with napari
+A plugin to interface [DEXP](https://github.com/royerlab/dexp) with [napari](https://github.com/napari/napari).
 
 ----------------------------------
 
@@ -50,7 +50,7 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
 [cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin
-[file an issue]: https://github.com/JoOkuma/napari-dexp/issues
+[file an issue]: https://github.com/royerlab/napari-dexp/issues
 [napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
