@@ -16,9 +16,15 @@ import numpy as np
 SUPPORTED_TYPES = ['image', 'labels']
 
 
+def is_valid_extension(path: str) -> bool:
+    if path.endswith('.zarr') or path.endswith('.zarr.zip'):
+        return True
+    return False
+
+
 @napari_hook_implementation
 def napari_get_writer(path: str, layer_types: List[str]) -> Optional[Callable]:
-    if not (path.endswith('.zarr') or path.endswith('.zarr.zip')):
+    if not is_valid_extension(path):
         return None
 
     for layer_type in layer_types:
@@ -29,6 +35,9 @@ def napari_get_writer(path: str, layer_types: List[str]) -> Optional[Callable]:
 
 
 def writer(path: str, layers_data: List[Tuple[Any, Dict, str]]) -> str:
+    if not is_valid_extension(path):
+        return None
+
     dataset = ZDataset(path, mode='w-')
 
     for data, meta, ltype in layers_data:
@@ -49,4 +58,3 @@ def napari_write_image(path: str, data: Any, meta: Dict) -> str:
 @napari_hook_implementation
 def napari_write_labels(path: str, data: Any, meta: Dict) -> str:
     return writer(path, [(data, meta, 'labels')])
-

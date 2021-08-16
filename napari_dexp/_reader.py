@@ -1,6 +1,7 @@
 from napari_plugin_engine import napari_hook_implementation
 from napari.utils.colormaps.colormap_utils import AVAILABLE_COLORMAPS
 from dexp.datasets.zarr_dataset import ZDataset
+import numpy as np
 
 
 @napari_hook_implementation
@@ -85,6 +86,7 @@ def reader_function(path):
 
             if layer_type == 'image':
                 add_kwargs['blending'] = 'additive'
+                add_kwargs['rendering'] = 'attenuated_mip'
 
                 for colormap in AVAILABLE_COLORMAPS:
                     if colormap in channel.lower():
@@ -93,7 +95,22 @@ def reader_function(path):
             channel_metadata = metadata.get(channel, {})
             add_kwargs['scale'] = [channel_metadata.get(axis, s) for axis, s in zip(axes, ds_scale)]
 
-            array = dataset.get_array(channel)
+            array = dataset.get_array(channel) # , wrap_with_tensorstore=True)
             layer_data.append((array, add_kwargs, layer_type))
+
+            if layer_type == 'image':
+                proj_array = np.asarray(dataset.get_projection_array(channel, axis=0))
+                proj_array = proj_array.reshape((proj_array.shape[0], 1, *proj_array.shape[1:]))
+                if proj_array is not None:
+                    scale = add_kwargs['scale']
+                    proj_kwargs = {
+                        'name': 'proj_' + channel,
+                        'blending': 'additive',
+                        'visible': False,
+                        'colormap': add_kwargs.get('colormap'),
+                        'scale': [scale[0]] + scale[-2:]
+                    }
+
+                    layer_data.append((proj_array, proj_kwargs, layer_type))
         
     return layer_data
