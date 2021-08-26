@@ -108,7 +108,7 @@ def reader_function(path):
                         'blending': 'additive',
                         'visible': False,
                         'colormap': add_kwargs.get('colormap'),
-                        'scale': [scale[0]] + scale[-2:]
+                        'scale': [scale[0], 1] + scale[-2:],
                     }
 
                     layer_data.append((proj_array, proj_kwargs, layer_type))
