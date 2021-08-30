@@ -2,6 +2,7 @@ from napari_plugin_engine import napari_hook_implementation
 from napari.utils.colormaps.colormap_utils import AVAILABLE_COLORMAPS
 from dexp.datasets.zarr_dataset import ZDataset
 import numpy as np
+import os
 
 
 @napari_hook_implementation
@@ -24,6 +25,8 @@ def napari_get_reader(path):
     # if we know we cannot read the file, we immediately return None.
     for path in paths:
         if not path.endswith((".zarr", ".zarr.zip")):
+            return None
+        elif path.endswith('.zarr') and '.zattrs' not in os.listdir(path):
             return None
 
     # otherwise we return the *function* that can read ``path``.
@@ -68,20 +71,18 @@ def reader_function(path):
     paths = [path] if isinstance(path, str) else path
 
     layer_data = []
-    axes = ('dt', 'dz', 'dy', 'dx')
 
     for path in paths:
         mode = 'r' if path.endswith('.zip') else 'r+'
         dataset = ZDataset(path, mode=mode)
-        metadata = dataset.get_metadata()
-
-        ds_scale = [metadata.get(axis, 1.0) for axis in axes]
 
         for channel in dataset.channels():
             layer_type = _guess_layer_type(channel)
 
             add_kwargs = {
                 'name': channel,
+                'scale': dataset.get_resolution(channel),
+                'translate': dataset.get_translation(channel),
             }
 
             if layer_type == 'image':
@@ -92,9 +93,6 @@ def reader_function(path):
                     if colormap in channel.lower():
                         add_kwargs['colormap'] = colormap
 
-            channel_metadata = metadata.get(channel, {})
-            add_kwargs['scale'] = [channel_metadata.get(axis, s) for axis, s in zip(axes, ds_scale)]
-
             array = dataset.get_array(channel) # , wrap_with_tensorstore=True)
             layer_data.append((array, add_kwargs, layer_type))
 
@@ -103,12 +101,14 @@ def reader_function(path):
                 proj_array = proj_array.reshape((proj_array.shape[0], 1, *proj_array.shape[1:]))
                 if proj_array is not None:
                     scale = add_kwargs['scale']
+                    translation = add_kwargs['translate']
                     proj_kwargs = {
                         'name': 'proj_' + channel,
                         'blending': 'additive',
                         'visible': False,
                         'colormap': add_kwargs.get('colormap'),
                         'scale': [scale[0], 1] + scale[-2:],
+                        'translate': [0] + translation[-2:],
                     }
 
                     layer_data.append((proj_array, proj_kwargs, layer_type))
