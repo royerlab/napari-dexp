@@ -10,7 +10,6 @@ Replace code below according to your needs
 from napari_plugin_engine import napari_hook_implementation
 from typing import Callable, Optional, Any, Dict, List, Tuple
 from dexp.datasets.zarr_dataset import ZDataset
-import numpy as np
 
 
 SUPPORTED_TYPES = ['image', 'labels']
@@ -43,7 +42,7 @@ def writer(path: str, layers_data: List[Tuple[Any, Dict, str]]) -> str:
     for data, meta, ltype in layers_data:
         dataset.add_channel(meta['name'],
                             shape=data.shape,
-                            dtype=np.uint16 if ltype == 'image' else np.uint32)
+                            dtype=data.dtype)
         dataset.write_array(meta['name'], data)
 
     dataset.close()
