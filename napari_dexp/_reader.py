@@ -97,9 +97,11 @@ def reader_function(path):
             layer_data.append((array, add_kwargs, layer_type))
 
             if layer_type == 'image':
-                proj_array = np.asarray(dataset.get_projection_array(channel, axis=0))
-                proj_array = proj_array.reshape((proj_array.shape[0], 1, *proj_array.shape[1:]))
+                proj_array = dataset.get_projection_array(channel, axis=0)
                 if proj_array is not None:
+                    proj_array = np.asarray(proj_array)
+                    proj_array = proj_array.reshape((proj_array.shape[0], 1, *proj_array.shape[1:]))
+
                     scale = add_kwargs['scale']
                     translation = add_kwargs['translate']
                     proj_kwargs = {
