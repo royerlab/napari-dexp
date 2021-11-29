@@ -85,18 +85,20 @@ def reader_function(path):
                 'translate': dataset.get_translation(channel),
             }
 
+            array = dataset.get_array(channel)
+            layer_data.append((array, add_kwargs, layer_type))
+
             if layer_type == 'image':
                 add_kwargs['blending'] = 'additive'
                 add_kwargs['rendering'] = 'attenuated_mip'
+                add_kwargs['contrast_limits'] = (
+                    0, 1500 if issubclass(array.dtype.type, np.integer) else 1.0
+                )
 
                 for colormap in AVAILABLE_COLORMAPS:
                     if colormap in channel.lower():
                         add_kwargs['colormap'] = colormap
 
-            array = dataset.get_array(channel) # , wrap_with_tensorstore=True)
-            layer_data.append((array, add_kwargs, layer_type))
-
-            if layer_type == 'image':
                 proj_array = dataset.get_projection_array(channel, axis=0)
                 if proj_array is not None:
                     proj_array = np.asarray(proj_array)
@@ -104,12 +106,14 @@ def reader_function(path):
 
                     scale = add_kwargs['scale']
                     translation = add_kwargs['translate']
+                    contrast_limits = add_kwargs['contrast_limits']
                     proj_kwargs = {
                         'name': 'proj_' + channel,
                         'blending': 'additive',
                         'visible': False,
                         'colormap': add_kwargs.get('colormap'),
                         'scale': [scale[0], 1] + scale[-2:],
+                        'contrast_limits': contrast_limits,
                         'translate': [0] + translation[-2:],
                     }
 
