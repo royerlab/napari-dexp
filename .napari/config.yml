@@ -11,5 +11,6 @@ labels:
   - Image deconvolution
   - 2D image
   - 3D image
+  - Image time series
   - Image visualisation
   - Data handling
