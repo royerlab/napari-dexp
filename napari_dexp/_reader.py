@@ -1,11 +1,9 @@
-from napari_plugin_engine import napari_hook_implementation
 from napari.utils.colormaps.colormap_utils import AVAILABLE_COLORMAPS
 from dexp.datasets.zarr_dataset import ZDataset
 import numpy as np
 import os
 
 
-@napari_hook_implementation
 def napari_get_reader(path):
     """A basic implementation of the napari_get_reader hook specification.
 
