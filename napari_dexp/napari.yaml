@@ -1,5 +1,6 @@
 name: napari-dexp
 schema_version: 0.1.0
+display_name: DEXP
 contributions:
   commands:
   - id: napari-dexp.get_reader
