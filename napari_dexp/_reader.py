@@ -1,11 +1,8 @@
-from napari_plugin_engine import napari_hook_implementation
 from napari.utils.colormaps.colormap_utils import AVAILABLE_COLORMAPS
 from dexp.datasets.zarr_dataset import ZDataset
 import numpy as np
-import os
 
 
-@napari_hook_implementation
 def napari_get_reader(path):
     """A basic implementation of the napari_get_reader hook specification.
 
@@ -25,8 +22,6 @@ def napari_get_reader(path):
     # if we know we cannot read the file, we immediately return None.
     for path in paths:
         if not path.endswith((".zarr", ".zarr.zip")):
-            return None
-        elif path.endswith('.zarr') and '.zattrs' not in os.listdir(path):
             return None
 
     # otherwise we return the *function* that can read ``path``.
