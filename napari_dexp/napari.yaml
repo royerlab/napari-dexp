@@ -16,6 +16,7 @@ contributions:
   - command: napari-dexp.get_reader
     filename_patterns:
     - "*.zarr"
+    - "*.zarr.zip"
     accepts_directories: true
   writers:
   - command: napari-dexp.write_image
