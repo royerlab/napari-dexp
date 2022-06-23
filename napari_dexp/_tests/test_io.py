@@ -37,5 +37,5 @@ def test_write_and_read(make_napari_viewer):
         saved_path = os.path.join(tmpdir, 'saved.zarr')
         save_layers(saved_path, [layer])
 
-        saved_layer = viewer.open(saved_path)[0]
+        saved_layer = viewer.open(saved_path, plugin='napari-dexp')[0]
         assert np.all(np.asarray(saved_layer.data) == np.asarray(layer.data))
