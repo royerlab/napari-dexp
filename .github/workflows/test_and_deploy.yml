@@ -8,14 +8,12 @@ on:
     branches:
       - master
       - main
-      - fix-ci
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
   pull_request:
     branches:
       - master
       - main
-      - fix-ci
   workflow_dispatch:
 
 jobs:
@@ -57,7 +55,7 @@ jobs:
     # github secrets (see readme for details)
     needs: [test]
     runs-on: ubuntu-latest
-    # if: contains(github.ref, 'tags')
+    if: contains(github.ref, 'tags')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
