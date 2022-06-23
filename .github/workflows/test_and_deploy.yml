@@ -42,6 +42,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install napari[all]
           pip install pytest pytest-cookies pytest-qt tox
           pip install .
 
