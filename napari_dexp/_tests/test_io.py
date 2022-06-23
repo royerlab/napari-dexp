@@ -30,7 +30,7 @@ def test_write_and_read(make_napari_viewer):
         dataset.close()
 
         viewer: napari.Viewer = make_napari_viewer()
-        layer = viewer.open(ds_path)[0]
+        layer = viewer.open(ds_path, plugin='napari-dexp')[0]
         assert np.all(layer.scale == (20, 2, 1, 1))
         assert np.all(layer.translate == (0, 3.5, 0, 1.5))
         
