@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cookies tox
+          pip install pytest pytest-cookies pytest-qt tox
           pip install .
 
       - name: Test
