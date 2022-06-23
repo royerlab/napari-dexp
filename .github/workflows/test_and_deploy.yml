@@ -8,12 +8,14 @@ on:
     branches:
       - master
       - main
+      - fix-ci
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
   pull_request:
     branches:
       - master
       - main
+      - fix-ci
   workflow_dispatch:
 
 jobs:
@@ -57,7 +59,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools tox tox-gh-actions
-          pip install pyopencl --prefer-binary
+        # pip install pyopencl --prefer-binary
       # this runs the platform-specific tests declared in tox.ini
       - name: Test with tox
         run: tox
@@ -73,7 +75,7 @@ jobs:
     # github secrets (see readme for details)
     needs: [test]
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'tags')
+    # if: contains(github.ref, 'tags')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -84,7 +86,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -U setuptools setuptools_scm wheel twine
-          pip install pyopencl --prefer-binary
+        # pip install pyopencl --prefer-binary
       - name: Build and publish
         env:
           TWINE_USERNAME: __token__
