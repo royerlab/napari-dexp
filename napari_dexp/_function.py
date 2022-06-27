@@ -54,3 +54,15 @@ def sobel_filter_napari(
         image=image,
         exponent=exponent,
         gamma=gamma)
+
+
+@register_function(menu="Filtering > Area opening (dexp)")
+@time_slicer
+def area_opening_napari(
+    image: napari.types.ImageData,
+    area_threshold: float = 100,
+    sampling: int = 1,
+) -> napari.types.ImageData:
+    from dexp.processing.morphology import area_opening
+
+    return area_opening(image=image, area_threshold=area_threshold, sampling=sampling)
