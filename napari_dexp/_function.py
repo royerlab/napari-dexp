@@ -66,3 +66,42 @@ def area_opening_napari(
     from dexp.processing.morphology import area_opening
 
     return area_opening(image=image, area_threshold=area_threshold, sampling=sampling)
+
+
+@register_function(menu="Filtering > Area closing (dexp)")
+@time_slicer
+def area_closing_napari(
+    image: napari.types.ImageData,
+    area_threshold: float = 100,
+    sampling: int = 1,
+) -> napari.types.ImageData:
+    from dexp.processing.morphology import area_closing
+
+    return area_closing(image=image, area_threshold=area_threshold, sampling=sampling)
+
+
+@register_function(menu="Filtering > Area white top hat (dexp)")
+@time_slicer
+def area_white_top_hat_napari(
+    image: napari.types.ImageData,
+    area_threshold: float = 100,
+    sampling: int = 1,
+) -> napari.types.ImageData:
+    from dexp.processing.morphology import area_white_top_hat
+
+    return area_white_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
+
+
+@register_function(menu="Filtering > Area black top hat (dexp)")
+@time_slicer
+def area_black_top_hat_napari(
+    image: napari.types.ImageData,
+    area_threshold: float = 100,
+    sampling: int = 1,
+) -> napari.types.ImageData:
+    from dexp.processing.morphology import area_black_top_hat
+
+    return area_black_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
+
+
+
