@@ -104,4 +104,24 @@ def area_black_top_hat_napari(
     return area_black_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
 
 
+@register_function(menu="Filtering > Dehaze (dexp)")
+@time_slicer
+def dehaze_napari(
+    image: napari.types.ImageData,
+    size: int = 21,
+    downscale: int = 4,
+    minimal_zero_level: float = 0,
+    correct_max_level: bool = True) -> napari.types.ImageData:
+
+    from dexp.processing.restoration.dehazing import dehaze
+
+    return dehaze(
+        image=image,
+        size=size,
+        downscale=downscale,
+        minimal_zero_level=minimal_zero_level,
+        correct_max_level=correct_max_level,
+        in_place=False
+    )
+
 
