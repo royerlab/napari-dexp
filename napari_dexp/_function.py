@@ -18,12 +18,12 @@ def denoise_butterworth(
     order: float = 1,
     padding: int = 32
 ) -> napari.types.ImageData:
-    import dexp
+    from dexp.processing import denoising
 
-    return dexp.processing.denoising.denoise_butterworth(image=image,
-                               freq_cutoff=freq_cutoff,
-                               order=order,
-                               padding=padding)
+    return denoising.denoise_butterworth(image=image,
+                                         freq_cutoff=freq_cutoff,
+                                         order=order,
+                                         padding=padding)
 
 
 @register_function(menu="Filtering / deconvolution > Lucy-Richardson (dexp)")
@@ -33,9 +33,9 @@ def lucy_richardson_deconvolution(
     psf: napari.types.ImageData,
     num_iterations: int = 10
 ) -> napari.types.ImageData:
-    import dexp
+    from dexp.processing import deconvolution
 
-    return dexp.processing.deconvolution.lucy_richardson_deconvolution(
+    return deconvolution.lucy_richardson_deconvolution(
         image=image,
         psf=psf,
         num_iterations=num_iterations
@@ -49,9 +49,9 @@ def sobel_filter(
     gamma: float = 1
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing.filters import sobel_filter
 
-    return dexp.processing.filters.sobel_filter.sobel_filter(
+    return sobel_filter.sobel_filter(
         image=image,
         exponent=exponent,
         gamma=gamma)
@@ -65,9 +65,9 @@ def area_opening(
     sampling: int = 1,
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing import morphology
 
-    return dexp.processing.morphology.area_opening(image=image, area_threshold=area_threshold, sampling=sampling)
+    return morphology.area_opening(image=image, area_threshold=area_threshold, sampling=sampling)
 
 
 @register_function(menu="Filtering > Area closing (dexp)")
@@ -78,9 +78,9 @@ def area_closing(
     sampling: int = 1,
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing import morphology
 
-    return dexp.processing.morphology.area_closing(image=image, area_threshold=area_threshold, sampling=sampling)
+    return morphology.area_closing(image=image, area_threshold=area_threshold, sampling=sampling)
 
 
 @register_function(menu="Filtering > Area white top hat (dexp)")
@@ -91,9 +91,9 @@ def area_white_top_hat(
     sampling: int = 1,
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing import morphology
 
-    return dexp.processing.morphology.area_white_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
+    return morphology.area_white_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
 
 
 @register_function(menu="Filtering > Area black top hat (dexp)")
@@ -104,9 +104,9 @@ def area_black_top_hat(
     sampling: int = 1,
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing import morphology
 
-    return dexp.processing.morphology.area_black_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
+    return morphology.area_black_top_hat(image=image, area_threshold=area_threshold, sampling=sampling)
 
 
 @register_function(menu="Filtering > Dehaze (dexp)")
@@ -119,9 +119,9 @@ def dehaze(
     correct_max_level: bool = True
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing.restoration import dehazing
 
-    return dexp.processing.restoration.dehazing.dehaze(
+    return dehazing.dehaze(
         image=image,
         size=size,
         downscale=downscale,
@@ -142,9 +142,9 @@ def lipschitz_continuity_correction(
     decimation: int = 8
 ) -> napari.types.ImageData:
 
-    import dexp
+    from dexp.processing.restoration import lipshitz_correction
 
-    return dexp.processing.restoration.lipshitz_correction.lipschitz_continuity_correction(
+    return lipshitz_correction.lipschitz_continuity_correction(
         image=image,
         num_iterations=num_iterations,
         correction_percentile=correction_percentile,
