@@ -40,3 +40,17 @@ def lucy_richardson_deconvolution_napari(
         psf=psf,
         num_iterations=num_iterations
     )
+
+@register_function(menu="Filtering / edge enhancement > Sobel (dexp)")
+@time_slicer
+def sobel_filter_napari(
+    image: napari.types.ImageData,
+    exponent: int = 2,
+    gamma: float = 1) -> napari.types.ImageData:
+
+    from dexp.processing.filters.sobel_filter import sobel_filter
+
+    return sobel_filter(
+        image=image,
+        exponent=exponent,
+        gamma=gamma)
