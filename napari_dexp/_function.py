@@ -20,8 +20,23 @@ def denoise_butterworth_napari(
 
     from dexp.processing.denoising import denoise_butterworth
 
-    return denoise_butterworth(image,
+    return denoise_butterworth(image=image,
                                freq_cutoff=freq_cutoff,
                                order=order,
                                padding=padding)
 
+
+@register_function(menu="Filtering / deconvolution > Lucy-Richardson (dexp)")
+@time_slicer
+def lucy_richardson_deconvolution_napari(
+    image: napari.types.ImageData,
+    psf: napari.types.ImageData,
+    num_iterations: int = 10) -> napari.types.ImageData:
+
+    from dexp.processing.deconvolution import lucy_richardson_deconvolution
+
+    return lucy_richardson_deconvolution(
+        image=image,
+        psf=psf,
+        num_iterations=num_iterations
+    )
