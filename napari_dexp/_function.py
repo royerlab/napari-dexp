@@ -125,3 +125,25 @@ def dehaze_napari(
     )
 
 
+@register_function(menu="Filtering > Lipschitz continuity correction (dexp)")
+@time_slicer
+def lipschitz_continuity_correction_napari(
+    image: napari.types.ImageData,
+    num_iterations: int = 2,
+    correction_percentile: float = 0.1,
+    lipschitz: float = 0.1,
+    max_proportion_corrected: float = 1,
+    decimation: int = 8
+) -> napari.types.ImageData:
+
+    from dexp.processing.restoration.lipshitz_correction import lipschitz_continuity_correction
+
+    return lipschitz_continuity_correction(
+        image=image,
+        num_iterations=num_iterations,
+        correction_percentile=correction_percentile,
+        lipschitz=lipschitz,
+        max_proportion_corrected=max_proportion_corrected,
+        decimation=decimation,
+        in_place = False)
+
