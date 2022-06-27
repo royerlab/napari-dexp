@@ -16,8 +16,8 @@ def denoise_butterworth(
     image: napari.types.ImageData,
     freq_cutoff: float = 0.5,
     order: float = 1,
-    padding: int = 32,
-    viewer:napari.Viewer = None) -> napari.types.ImageData:
+    padding: int = 32
+) -> napari.types.ImageData:
     import dexp
 
     return dexp.processing.denoising.denoise_butterworth(image=image,
@@ -31,7 +31,8 @@ def denoise_butterworth(
 def lucy_richardson_deconvolution(
     image: napari.types.ImageData,
     psf: napari.types.ImageData,
-    num_iterations: int = 10) -> napari.types.ImageData:
+    num_iterations: int = 10
+) -> napari.types.ImageData:
     import dexp
 
     return dexp.processing.deconvolution.lucy_richardson_deconvolution(
@@ -45,7 +46,8 @@ def lucy_richardson_deconvolution(
 def sobel_filter(
     image: napari.types.ImageData,
     exponent: int = 2,
-    gamma: float = 1) -> napari.types.ImageData:
+    gamma: float = 1
+) -> napari.types.ImageData:
 
     import dexp
 
@@ -114,7 +116,8 @@ def dehaze(
     size: int = 21,
     downscale: int = 4,
     minimal_zero_level: float = 0,
-    correct_max_level: bool = True) -> napari.types.ImageData:
+    correct_max_level: bool = True
+) -> napari.types.ImageData:
 
     import dexp
 
