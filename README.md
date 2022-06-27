@@ -26,6 +26,11 @@ You can install `napari-dexp` via [pip]:
 
     pip install napari-dexp
 
+It is recommended to run it on a computer with a CUDA compatible graphics card and also to 
+[install cupy](https://docs.cupy.dev/en/stable/install.html), e.g. like this:
+
+    conda install cupy -c conda-forge
+
 ## Contributing
 
 Contributions are very welcome. Tests can be run with [tox], please ensure
