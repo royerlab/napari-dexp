@@ -1,5 +1,6 @@
 # napari-DEXP
 
+[![DOI](https://zenodo.org/badge/367487568.svg)](https://zenodo.org/doi/10.5281/zenodo.13761260)
 [![License](https://img.shields.io/pypi/l/napari-dexp.svg?color=green)](https://github.com/royerlab/napari-dexp/raw/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/napari-dexp.svg?color=green)](https://pypi.org/project/napari-dexp)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-dexp.svg?color=green)](https://python.org)
